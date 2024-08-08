@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css">
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap-5.3.3/css/bootstrap.min.css">
+    <title> To-Do Liste App</title>
+</head>
+<body>
+    <div id="header" class="container-fluid">
+        <header>
+            <nav>
+                <ul class="nav mb-2 justify-content-center mb-md-0">
+                    <li><a href="index.html" class="nav-link px-2"> To-Do Liste </a></li>
+                    <li><a href="about.html" class="nav-link px-2"> Über App </a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+    <div class="container">
+        <main>
+            <div class="row justify-content-center mt-3">
+                <div class="col-md-6 gy-2">
+                    <input id="new-task" class="form-control" type="text" placeholder="Neue Aufgabe">
+                </div>
+                <div class="col-md-2 gy-2">
+                    <button id="btn-add" class="btn btn-primary" onclick="createNewTask()"> Hinzufügen </button>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <div id="message" class="col-md-8">
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <div class="col-md-8">
+                    <ul id="task-list" class="list-group">
+                    </ul>
+                </div>
+            </div>
+            <div class="row justify-content-center my-3">
+                <div class="col-md-8">
+                    <button type="button" class="btn btn-danger" onclick="deleteAllTasks()">Die Liste Löschen</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="footer" class="container-fluid text-center">
+        <footer class="py-3 my-4">
+            <div class="col">
+                <span class="mb-3 mb-md-0">© 2024</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="resources/js/script.js"></script>
+    <script src="vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

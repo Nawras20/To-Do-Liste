@@ -1,0 +1,22 @@
+body {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+#header,
+#footer {
+    background: #696969;
+}
+
+a.nav-link, a.nav-link:hover, footer span {
+    color: white;
+}
+
+#btn-add {
+    width: 100%;
+}
+
+.form-check-input:checked+.form-check-label {
+    text-decoration: line-through;
+}
