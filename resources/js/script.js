@@ -6,13 +6,21 @@ function documentLoaded() {
 }
 
 function createNewArrayInLocalStorage() {
-    if (localStorage.getItem("todos") === null) {
-        localStorage.setItem("todos", JSON.stringify(new Array()));
+    if (getLocalStorage() === null) {
+        setLocalStorage(new Array());
     }
 }
 
+function setLocalStorage(value){
+    localStorage.setItem("todos", JSON.stringify(value));
+}
+
+function getLocalStorage(){
+    return JSON.parse(localStorage.getItem("todos"));
+}
+
 function showTasks() {
-    const todos = JSON.parse(localStorage.getItem("todos"));
+    const todos = getLocalStorage();
 
     document.getElementById("task-list").innerHTML = "";
     const tasklist = document.getElementById('task-list');
@@ -58,10 +66,10 @@ function createNewTask() {
     var newTask = document.getElementById('new-task').value;
 
     if (newTask != "") {
-        var todos = JSON.parse(localStorage.getItem("todos"));
+        var todos = getLocalStorage();
         var obj = { title: newTask, done: false }
         todos.push(obj);
-        localStorage.setItem("todos", JSON.stringify(todos));
+        setLocalStorage(todos);
 
         showTasks();
         document.getElementById('new-task').value = '';
@@ -82,20 +90,20 @@ function showMessage() {
 }
 
 function deleteTask(index) {
-    var todos = JSON.parse(localStorage.getItem("todos"));
+    var todos = getLocalStorage();
     todos.splice(index, 1);
-    localStorage.setItem("todos", JSON.stringify(todos));
+    setLocalStorage(todos);
 
     showTasks();
 }
 
 function deleteAllTasks() {
-    localStorage.setItem("todos", JSON.stringify(new Array()));
+    setLocalStorage(new Array());
     showTasks();
 };
 
 function checkboxChanged(e) {
-    var todos = JSON.parse(localStorage.getItem("todos"));
+    var todos = getLocalStorage();
 
     if (e.target.checked === true) {
         todos[e.target.id].done = true;
@@ -103,5 +111,5 @@ function checkboxChanged(e) {
         todos[e.target.id].done = false;
     }
 
-    localStorage.setItem("todos", JSON.stringify(todos));
+    setLocalStorage(todos);
 }
