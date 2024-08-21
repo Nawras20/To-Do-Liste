@@ -32,6 +32,6 @@ a.nav-link:hover {
     margin-right: 15px;
 }
 
-.form-check-input:checked+.form-check-label {
+.form-check-input:checked + .form-check-label {
     text-decoration: line-through;
 }

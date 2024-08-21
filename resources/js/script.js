@@ -1,29 +1,32 @@
-document.addEventListener("load", documentLoaded());
+// jshint esversion: 6
+
+document.addEventListener("DOMContentLoaded", documentLoaded);
 
 function documentLoaded() {
     createNewArrayInLocalStorage();
     showTasks();
 }
 
-const editModal = document.getElementById('editModal')
+const editModal = document.getElementById('editModal');
 if (editModal) {
     editModal.addEventListener('show.bs.modal', event => {
-        const button = event.relatedTarget
+        const button = event.relatedTarget;
 
-        const id = button.getAttribute('id');
+        const index = button.getAttribute('id');
         const btnsave = document.getElementById('btnsave');
-        btnsave.setAttribute("onClick", "editTask(" + id + ")");
+        btnsave.setAttribute("onClick", "editTask(" + index + ")");
 
-        const todos = getLocalStorage();
-        const todo = todos[id].title;
-        const modalBodyInput = editModal.querySelector('.modal-body textarea')
-        modalBodyInput.value = todo
-    })
+        const tasks = getLocalStorage();
+        const task = tasks[index].title;
+        const modalBodyInput = editModal.querySelector('.modal-body textarea');
+        modalBodyInput.value = task;
+    });
 }
 
 function createNewArrayInLocalStorage() {
     if (getLocalStorage() === null) {
-        setLocalStorage(new Array());
+        var newArray = [];
+        setLocalStorage(newArray);
     }
 }
 
@@ -36,12 +39,29 @@ function getLocalStorage() {
 }
 
 function showTasks() {
-    const todos = getLocalStorage();
+    const tasks = getLocalStorage();
 
-    document.getElementById("task-list").innerHTML = "";
     const tasklist = document.getElementById('task-list');
+    while (tasklist.hasChildNodes()) {
+        tasklist.removeChild(tasklist.firstChild);
+    }
 
-    todos.forEach((todo, index) => {
+    const btnDeleteAll = document.getElementById('btn-delete-all');
+    
+    if (tasks.length == 0) {
+        let div = document.createElement("div");
+        div.setAttribute("class", "alert alert-warning");
+        div.textContent = "Keine Aufgaben verfügbar!";
+        tasklist.appendChild(div);
+        
+        btnDeleteAll.setAttribute("Disabled", "");
+    } else {
+        if (btnDeleteAll.hasAttribute("Disabled")) {
+            btnDeleteAll.removeAttribute("Disabled");
+        }
+    }
+
+    tasks.forEach((task, index) => {
         let div = document.createElement("div");
         div.setAttribute("id", "Todo-" + index);
         tasklist.appendChild(div);
@@ -59,7 +79,7 @@ function showTasks() {
         input.setAttribute("id", index);
         input.setAttribute("class", "form-check-input me-1");
         input.setAttribute("onchange", "checkboxChanged(event)");
-        if (todo.done === true) {
+        if (task.done === true) {
             input.setAttribute("checked", true);
         }
         container.appendChild(input);
@@ -67,7 +87,7 @@ function showTasks() {
         let label = document.createElement("label");
         label.setAttribute("class", "form-check-label");
         label.setAttribute("for", index);
-        label.textContent = todo.title;
+        label.textContent = task.title;
         container.appendChild(label);
 
         let buttons = document.createElement("div");
@@ -96,62 +116,63 @@ function createNewTask() {
     var newTask = document.getElementById('new-task').value;
 
     if (newTask != "") {
-        var todos = getLocalStorage();
-        var obj = { title: newTask, done: false }
-        todos.push(obj);
-        setLocalStorage(todos);
+        var tasks = getLocalStorage();
+        var obj = { title: newTask, done: false };
+        tasks.push(obj);
+        setLocalStorage(tasks);
 
         showTasks();
         document.getElementById('new-task').value = '';
         showMessage();
     }
-};
+}
 
 function showMessage() {
-    var message = document.createElement("div");
-    message.setAttribute("class", "alert alert-success");
-    message.textContent = "Neue Aufgabe wurde hinzugefügt.";
+    var div = document.createElement("div");
+    div.setAttribute("class", "alert alert-success");
+    div.textContent = "Neue Aufgabe wurde hinzugefügt.";
 
-    document.getElementById("message").appendChild(message);
-
+    const message = document.getElementById("message");
+    message.appendChild(div);
+    
     setTimeout(function () {
-        document.getElementById("message").innerHTML = "";
-    }, 3000);
+        message.removeChild(message.firstElementChild);
+    }, 2000);
 }
 
 function deleteTask(index) {
-    var todos = getLocalStorage();
-    todos.splice(index, 1);
-    setLocalStorage(todos);
-
+    var tasks = getLocalStorage();
+    tasks.splice(index, 1);
+    setLocalStorage(tasks);
     showTasks();
 }
 
 function deleteAllTasks() {
-    setLocalStorage(new Array());
+    var newArray = [];
+    setLocalStorage(newArray);
     showTasks();
-};
+}
 
 function checkboxChanged(e) {
-    var todos = getLocalStorage();
+    var tasks = getLocalStorage();
 
     if (e.target.checked === true) {
-        todos[e.target.id].done = true;
+        tasks[e.target.id].done = true;
     } else {
-        todos[e.target.id].done = false;
+        tasks[e.target.id].done = false;
     }
 
-    setLocalStorage(todos);
+    setLocalStorage(tasks);
 }
 
 function editTask(index) {
-    const todos = getLocalStorage();
+    const tasks = getLocalStorage();
 
     const editModal = document.getElementById('editModal');
-    const modalBodyInput = editModal.querySelector('.modal-body textarea')
-    todos[index].title = modalBodyInput.value;
-    
-    setLocalStorage(todos);
+    const modalBodyInput = editModal.querySelector('.modal-body textarea');
+    tasks[index].title = modalBodyInput.value;
+
+    setLocalStorage(tasks);
     showTasks();
 }
 
